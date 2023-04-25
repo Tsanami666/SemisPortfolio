@@ -1,0 +1,74 @@
+CREATE DATABASE EnrollmentDB;
+
+USE EnrollmentDB;
+
+DROP TABLE IF EXISTS Course;
+CREATE TABLE Course (
+  CourseCode VARCHAR(100) NOT NULL,
+  Coursename VARCHAR(100) NOT NULL,
+  PRIMARY KEY (CourseCode)
+);
+
+DROP TABLE IF EXISTS Municipality;
+CREATE TABLE Municipality (
+  ZipCode INT NOT NULL,
+  Town VARCHAR(100) NOT NULL,
+  PRIMARY KEY (ZipCode)
+);
+
+DROP TABLE IF EXISTS Student;
+CREATE TABLE Student (
+  StudentNo VARCHAR(100) NOT NULL,
+  LastName VARCHAR(100) NOT NULL,
+  FirstName VARCHAR(100) NOT NULL,
+  MiddleName VARCHAR(100) NOT NULL,
+  BirthDate VARCHAR(100) NOT NULL,
+  CourseCode VARCHAR(100) NOT NULL,
+  Email VARCHAR(100) NOT NULL,
+  Address VARCHAR(100) NOT NULL,
+  RatePerUnit INT NOT NULL,
+  ZipCode INT NOT NULL,
+  PRIMARY KEY (StudentNo),
+  FOREIGN KEY (CourseCode) REFERENCES Course(CourseCode),
+  FOREIGN KEY (ZipCode) REFERENCES Municipality(ZipCode)
+);
+
+DROP TABLE IF EXISTS Professor;
+CREATE TABLE Professor (
+  ProfID INT NOT NULL,
+  LastName VARCHAR(100) NOT NULL,
+  FirstName VARCHAR(100) NOT NULL,
+  MiddleName VARCHAR(100) NOT NULL,
+  Ranking VARCHAR(100) NOT NULL,
+  PRIMARY KEY (ProfID)
+);
+
+DROP TABLE IF EXISTS Section;
+CREATE TABLE Section (
+  SectionCode VARCHAR(100) NOT NULL,
+  SY INT NOT NULL,
+  Sem INT NOT NULL,
+  SubjCode VARCHAR(100) NOT NULL,
+  Day VARCHAR(100) NOT NULL,
+  Time VARCHAR(100) NOT NULL,
+  Room VARCHAR(100) NOT NULL,
+  ProfID INT NOT NULL,
+  PRIMARY KEY (SectionCode, SY, Sem),
+  FOREIGN KEY (ProfID) REFERENCES Professor (ProfID)
+);
+
+DROP TABLE IF EXISTS Enrollment;
+CREATE TABLE Enrollment (
+  StudentNo VARCHAR(100) NOT NULL,
+  SectionCode VARCHAR(100) NOT NULL,
+  SY INT NOT NULL,
+  Sem INT NOT NULL,
+  FOREIGN KEY (StudentNo) REFERENCES Student(StudentNo),
+  FOREIGN KEY (SectionCode, SY, Sem) REFERENCES Section (SectionCode, SY, Sem)
+);
+DROP TABLE IF EXISTS Subjects;
+CREATE TABLE Subjects (
+SubjectCode VARCHAR(10) not null,
+SubjectName VARCHAR(100) not null,
+Units INT NOT NULL
+);
